@@ -2,7 +2,10 @@ import pygame
 import enemie
 import board
 import tower
+<<<<<<< HEAD
+=======
 #from pygame.locals import *
+>>>>>>> 7ceeae268b7a35e4eb74081b51bf552c02cd73dc
 
 class Main:
     def __init__(self):
@@ -30,8 +33,6 @@ class Main:
         self._enemie_list = (self._inimigo, self._inimigo2, self._inimigo3)
         self._enemie_list_len = len(self._enemie_list)
         self._start_wave = False
-
-
 
         while not self._endgame:
             for event in pygame.event.get():
@@ -88,6 +89,7 @@ class Main:
 
     def _print_background(self, display):
         display.blit(pygame.image.load("img/fundo_jogo.png"), (0, 0))
+        display.blit(pygame.image.load("img/tower.png"),(70, 700))
 
     def button(self, msg, x, y, w, h, ic, ac):
         mouse = pygame.mouse.get_pos()
