@@ -2,6 +2,10 @@ import pygame
 import enemie
 import board
 import tower
+<<<<<<< HEAD
+=======
+#from pygame.locals import *
+>>>>>>> 7ceeae268b7a35e4eb74081b51bf552c02cd73dc
 
 class Main:
     def __init__(self):
@@ -15,6 +19,9 @@ class Main:
         self._i = 0
         self._wave_number = 1
         self._board = board.Board()
+
+        #Tower variables
+        self._tower_list = []
 
     def start(self):
         pygame.init()
@@ -31,6 +38,12 @@ class Main:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self._endgame = True
+                
+                #CATCHES MOUSE CLICK EVENT
+                if event.type == pygame.locals.MOUSEBUTTONDOWN:
+                    tower = Tower(self._display)
+                    self._tower_list.append(tower)
+
             cont = 0
             for e in self._enemie_list:
                 if e.is_active():
