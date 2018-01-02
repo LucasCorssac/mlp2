@@ -2,10 +2,7 @@ import pygame
 import enemie
 import board
 import tower
-<<<<<<< HEAD
-=======
 #from pygame.locals import *
->>>>>>> 7ceeae268b7a35e4eb74081b51bf552c02cd73dc
 
 class Main:
     def __init__(self):
