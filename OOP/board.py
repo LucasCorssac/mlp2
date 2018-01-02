@@ -46,22 +46,31 @@ class Board:
         if not is_empty(board):
             if first(board) == 0:
                 display.blit(self._image_grass, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 1:
                 display.blit(self._image_path1, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 2:
                 display.blit(self._image_path2, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 3:
                 display.blit(self._image_path3, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 4:
                 display.blit(self._image_path4, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 5:
                 display.blit(self._image_path5, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 6:
                 display.blit(self._image_path6, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 7:
                 display.blit(self._image_start, (int(first(centers)), line*40))
+                print(line)
             elif first(board) == 8:
                 display.blit(self._image_finish, (int(first(centers)), line*40))
+                print(line)
 
             self.draw_board_line(display, rest(board), rest(centers), line)
 
@@ -73,5 +82,7 @@ class Board:
             self.draw_board(display, init_line)
 
         self._board = self._init_board
+
+
 #board1 = Board()
 #print(board1._board_centers)

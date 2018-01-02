@@ -36,7 +36,7 @@ class Enemie:
                 self._spawn = self._spawn + int(1*self._speed)
                 self._move(self._spawn)
 
-    def update(self):
+    def draw(self):
         self._print(self._display)
         self._draw_enemie_health()
 

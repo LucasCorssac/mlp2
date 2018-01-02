@@ -24,9 +24,6 @@ class Tower:
         self._print(self._display)
         self._draw_enemie_health()
 
-    def _print(self, display):
-        display.blit(self.get_image(), self.get_pos())
-
     def _move(self, init):
         x, y = self.get_pos()
         if self._move_list_x[init] < 0:
@@ -37,11 +34,8 @@ class Tower:
                      y + int(self._move_list_y[init] * self._speed))
 
 
-    def _print(self, display):
-        display.blit(self.get_image(), self.get_pos())
-
-    def get_image(self):
-        return self._image
+    def draw(self):
+        self._display.blit(self._image, self.get_pos())
 
     def get_pos(self):
         return self._pos

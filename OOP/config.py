@@ -1,3 +1,4 @@
+
 class Config:
     # MENU
     MENU_BACK_IMAGE = "img/fundo.png"
@@ -27,3 +28,7 @@ class Config:
     IMAGE_START  = "img/start.png"
     IMAGE_FINISH = "img/finish.png"
     GAME_WINDOW  = "img/fundo_jogo.png"
+
+class Colors:
+    GREEN = (0, 200, 0)
+    BRIGHT_GREEN = (0, 255, 0)

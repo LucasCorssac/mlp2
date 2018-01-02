@@ -113,8 +113,7 @@ def make_trail_direction(i):
 trail_direction = [x for x in map(make_trail_direction, range(len(trail)))]
 
 #trail_direction = ['r', 'd', 'l', 'd', 'r', 'u', 'l','d', 'r', 'u']
-                   
-print (trail_direction)
+
 ROAD_WIDTH = 30
 
 #Rect((left, top), (width, height))

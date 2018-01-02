@@ -1,7 +1,9 @@
 import pygame
 import enemie
 import board
-import tower
+from td_game_ui import *
+from tower import *
+from config import Colors
 
 class Main:
     def __init__(self):
@@ -18,6 +20,10 @@ class Main:
 
         #Tower attributes
         self._tower_list = []
+
+        #UI attributes
+        self._wave_button = 
+        self._ui_elements_list = []
 
     def start(self):
         pygame.init()
@@ -36,8 +42,9 @@ class Main:
                     self._endgame = True
                 
                 #CATCHES MOUSE CLICK EVENT
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    t = tower.Tower(self._display)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    tower = Tower(self._display)
+                    tower._pos = event.pos
                     self._tower_list.append(tower)
 
             cont = 0
@@ -56,24 +63,30 @@ class Main:
                 if self._enemie_list[2].is_active() and now - self._last >= self._cooldown+200:
                     self._enemie_list[2].logic()
 
+            
+            self.draw_screen()
             self._clock.tick(50)
-            self.update_screen()
 
 
-    def update_screen(self):
+    def draw_screen(self):
         self._print_background(self._display)
         self._board.draw_board(self._display, 1)
         for e in self._enemie_list:
             if e.is_active():
-                e.update()
+                e.draw()
+        #draw towers
+        for _tower in self._tower_list:
+            _tower.draw()
         #self._enemie_list[0].update()
         #self._enemie_list[1].update()
         #self._enemie_list[2].update()
-        green = (0, 200, 0)
-        bright_green = (0, 255, 0)
-        self.button("Wave: "  + str(self._inimigo.get_level()), 150, 450, 100, 50, green, bright_green)
+
+        self._wave_button.draw()
+        
+        self.button("Wave: "  + str(self._inimigo.get_level()), 150, 450, 100, 50, Colors.GREEN, Colors.BRIGHT_GREEN)
         pygame.display.update()
         print(self._enemie_list[0].get_pos(), self._inimigo.is_active(), self._start_wave)
+        
 
     def _set_start_wave(self):
         if not self._start_wave:
@@ -99,14 +112,9 @@ class Main:
         else:
             pygame.draw.rect(self._display, ic, (x, y, w, h))
 
-        small_text = pygame.font.SysFont("comicsansms", 20)
-        text_surf, text_rect = self.text_objects(msg, small_text)
-        text_rect.center = ((x + (w / 2)), (y + (h / 2)))
-        self._display.blit(text_surf, text_rect)
+        
 
-    def text_objects(self, text, font):
-        text_surface = font.render(text, True, (0,0,0,0))
-        return text_surface, text_surface.get_rect()
+    
 
 inicio = Main()
 inicio.start()
