@@ -24,6 +24,6 @@ class Config:
     IMAGE_PATH5 = "img/path5.png"
     IMAGE_PATH6 = "img/path6.png"
 
-    IMAGE_START = "img/start.png"
+    IMAGE_START  = "img/start.png"
     IMAGE_FINISH = "img/finish.png"
-    GAME_WINDOW = "img/fundo_jogo.png"
+    GAME_WINDOW  = "img/fundo_jogo.png"
