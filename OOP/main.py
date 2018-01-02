@@ -2,7 +2,6 @@ import pygame
 import enemie
 import board
 import tower
-#from pygame.locals import *
 
 class Main:
     def __init__(self):
@@ -37,8 +36,8 @@ class Main:
                     self._endgame = True
                 
                 #CATCHES MOUSE CLICK EVENT
-                if event.type == pygame.locals.MOUSEBUTTONDOWN:
-                    tower = Tower(self._display)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    t = tower.Tower(self._display)
                     self._tower_list.append(tower)
 
             cont = 0
