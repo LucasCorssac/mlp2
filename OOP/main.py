@@ -17,7 +17,7 @@ class Main:
         self._wave_number = 1
         self._board = board.Board()
 
-        #Tower variables
+        #Tower attributes
         self._tower_list = []
 
     def start(self):
