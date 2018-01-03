@@ -9,6 +9,7 @@ class Button(UI):
         return text_surface, text_surface.get_rect()
 
     def draw(self, display):
+        pygame.draw.rect(self._display, ac, self.rect)
         small_text = pygame.font.SysFont("comicsansms", 20)
         text_surf, text_rect = self.text_objects(msg, small_text)
         text_rect.center = ((x + (w / 2)), (y + (h / 2)))

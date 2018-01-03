@@ -22,6 +22,7 @@ class Main:
         self._tower_list = []
 
         #UI attributes
+         150, 450, 100, 50
         self._wave_button = 
         self._ui_elements_list = []
 
@@ -83,7 +84,7 @@ class Main:
 
         self._wave_button.draw()
         
-        self.button("Wave: "  + str(self._inimigo.get_level()), 150, 450, 100, 50, Colors.GREEN, Colors.BRIGHT_GREEN)
+        self.button("Wave: "  + str(self._inimigo.get_level()),, Colors.GREEN, Colors.BRIGHT_GREEN)
         pygame.display.update()
         print(self._enemie_list[0].get_pos(), self._inimigo.is_active(), self._start_wave)
         
@@ -104,7 +105,7 @@ class Main:
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         if x + w > mouse[0] > x and y + h > mouse[1] > y:
-            pygame.draw.rect(self._display, ac, (x, y, w, h))
+           
             if click[0] == 1 and not self._start_wave:
                 self._set_start_wave()
                 for e in self._enemie_list:
