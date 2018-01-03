@@ -10,9 +10,10 @@ class Tower:
         self._image = pygame.image.load("img/Tower.png")
         self._level = 1
         self._id = 0
-        self._range = 50
+        self._range = 300
         self._attack_list = []
-        self._damage = 10
+        self._damage = 1
+        self._price = 50
 
     def logic(self):
             if self._spawn >= 3019 and self.is_active():
@@ -27,6 +28,9 @@ class Tower:
     def update(self):
         self._print(self._display)
         self._draw_enemie_health()
+
+    def get_price(self):
+        return self._price
 
     def _move(self, init):
         x, y = self.get_pos()
@@ -49,11 +53,13 @@ class Tower:
 
     def draw(self):
         self._display.blit(self._image, self.get_pos())
+        (x, y) = self.get_pos()
         for attack in self._attack_list:
-            pygame.draw.line(self._display, (255, 125, 0), self._pos, attack, 4)
+            pygame.draw.line(self._display, (255, 125, 0), (x+26, y+10), attack, 4)
 
     def get_pos(self):
-        return self._pos
+        x, y = self._pos
+        return x-26, y -30
 
     def set_pos(self, x, y):
         self._pos = (x, y)

@@ -3,7 +3,8 @@ import enemie
 import board
 from td_game_ui import *
 from tower import *
-from config import Colors
+import config
+import player
 
 class Main:
     def __init__(self):
@@ -17,14 +18,18 @@ class Main:
         self._i = 0
         self._wave_number = 1
         self._board = board.Board()
+        # PLAYER
+        self._player = player.Player()
 
         #Tower attributes
         self._tower_list = []
 
         #UI attributes
          
-        self._wave_button = Button(pygame.Rect(150, 450, 100, 50), "Wave 1")
+        self._wave_button = Button(pygame.Rect(680, 250, 100, 50), "Wave 1")
         self._ui_elements_list = []
+        self._gold_stats = Stats(pygame.Rect(740, 98, 0, 0), str(self._player.get_gold()))
+        self._life_stats = Stats(pygame.Rect(740, 48, 0, 0), str(self._player.get_life()))
 
     def start(self):
         pygame.init()
@@ -44,15 +49,17 @@ class Main:
                 
                 #CATCHES MOUSE CLICK EVENT
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self._wave_button.rect.collidepoint(event.pos):
+                    if self._wave_button.get_rect().collidepoint(event.pos):
                         if not self._start_wave:
                             self._set_start_wave()
                         for e in self._enemie_list:
                             e.set_active()
                     else:
                         tower = Tower(self._display)
-                        tower._pos = event.pos
-                        self._tower_list.append(tower)
+                        if self._player.get_gold() >= tower.get_price() and self.on_board(event.pos):
+                            self._player.set_gold(self._player.get_gold() - tower.get_price())
+                            tower._pos = event.pos
+                            self._tower_list.append(tower)
 
             cont = 0
             for e in self._enemie_list:
@@ -60,6 +67,10 @@ class Main:
                     cont = cont+1
             if cont == 0:
                 self._start_wave = False
+                for e in self._enemie_list:
+                    e.go_to_start_pos()
+
+
 
             if self._start_wave:
                 now = pygame.time.get_ticks()
@@ -76,11 +87,13 @@ class Main:
                 _tower._attack_list = []
                 for _enemy in self._enemie_list:
                     #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
-                    if _tower._distance_to(_enemy) <= _tower._range and len(_tower._attack_list) < tower._level :
+                    if _tower._distance_to(_enemy) <= _tower._range and len(_tower._attack_list) < tower._level and _enemy.is_active():
                         _tower._attack_list.append(_enemy._pos)
                         _enemy._health -= _tower._damage
                         if _enemy._health <= 0:
-                            _enemy.active = False
+                            _enemy.set_not_active()
+                            self._player.set_gold(self._player.get_gold()+_enemy.get_reward())
+
 
             
             self.draw_screen()
@@ -99,6 +112,16 @@ class Main:
         #DRAW TOWERS
         for _tower in self._tower_list:
             _tower.draw()
+
+        #DRAW GOLD
+        self._gold_stats.set_text(str(self._player.get_gold()))
+        self._gold_stats.draw(self._display)
+        #DRAW LIFE
+        life = 0
+        for e in self._enemie_list:
+            life += e.get_attacking()
+        self._life_stats.set_text(str(self._player.get_life()-life))
+        self._life_stats.draw(self._display)
 
         #self._enemie_list[0].update()
         #self._enemie_list[1].update()
@@ -124,7 +147,15 @@ class Main:
 
     def _print_background(self, display):
         display.blit(pygame.image.load("img/fundo_jogo.png"), (0, 0))
-        display.blit(pygame.image.load("img/tower.png"),(70, 700))            
+        display.blit(pygame.image.load("img/tower.png"),(70, 700))
+
+    def on_board(self, pos):
+        if 620 >= pos[0] >= 60 and 620 >= pos[1] >= 60:
+            return True
+        else:
+            return False
+
+
 
         
 

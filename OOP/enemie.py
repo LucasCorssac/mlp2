@@ -1,5 +1,6 @@
 import pygame
-
+import config
+import player
 
 # Arquivo para testar como fazer a wave de cobras
 # A ideia é ir fazendo aqui e dps dar um jeito de colocar no projeto
@@ -19,12 +20,14 @@ class Enemie:
         self._move_list_y = list([1]*80 + [0]*480 + [1]*240 + [0]*120 + [-1]*120 +
                                  [0]*360 + [1]*120 + [0]*280 + [1]*120 + [0]*280 + [1]*80 +
                                  [0]*360 + [-1]*120 + [0]*80 + [1]*160 + [0]*80)
-        self._speed = 20
+        self._speed = 2
         self._spawn = 0 - self._speed
         self._health_scale = 1
-        self._health = 100*self._health_scale
-        self._active = True
+        self._health = config.Config.ENEMIE_START_HEALTH*self._health_scale
+        self._active = False
         self._level = 1
+        self._reward = 50
+        self._attacking = 0
 
     def logic(self):
             if self._spawn >= 3019 and self.is_active():
@@ -32,6 +35,7 @@ class Enemie:
                 self._level += 1
                 self._pos = self._start_pos
                 self._active = False
+                self._attacking += 1
             else:
                 self._spawn = self._spawn + int(1*self._speed)
                 self._move(self._spawn)
@@ -48,6 +52,18 @@ class Enemie:
 
     def get_pos(self):
         return self._pos
+
+    def get_reward(self):
+        return self._reward
+
+    def get_attacking(self):
+        return self._attacking
+
+    def go_to_start_pos(self):
+        self._pos = self._start_pos
+        self._spawn = 0 - self._speed
+        self._level += 1
+        self.set_full_health()
 
     def _move(self, init):
         x, y = self.get_pos()
@@ -68,6 +84,12 @@ class Enemie:
 
     def set_active(self):
         self._active = True
+
+    def set_full_health(self):
+        self._health = config.Config.ENEMIE_START_HEALTH * self._health_scale
+
+    def set_not_active(self):
+        self._active = False
 
     def _draw_enemie_health(self):
         x, y = self.get_pos()

@@ -29,6 +29,14 @@ class Config:
     IMAGE_FINISH = "img/finish.png"
     GAME_WINDOW  = "img/fundo_jogo.png"
 
+    # ENEMIE
+    ENEMIE_START_HEALTH = 100
+
+    # PLAYER
+    PLAYER_START_HEALTH = 30
+    PLAYER_START_GOLD = 500
+
 class Colors:
     GREEN = (0, 200, 0)
     BRIGHT_GREEN = (0, 255, 0)
+    INVISIBLE = (0,0,0,0)
