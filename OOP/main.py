@@ -33,7 +33,7 @@ class Main:
         self._inimigo = enemie.Enemie(self._display)
         self._inimigo2 = enemie.Enemie(self._display)
         self._inimigo3 = enemie.Enemie(self._display)
-        self._enemie_list = (self._inimigo, self._inimigo2, self._inimigo3)
+        self._enemie_list = [self._inimigo, self._inimigo2, self._inimigo3]
         self._enemie_list_len = len(self._enemie_list)
         self._start_wave = False
 
@@ -69,6 +69,18 @@ class Main:
                     self._enemie_list[1].logic()
                 if self._enemie_list[2].is_active() and now - self._last >= self._cooldown+200:
                     self._enemie_list[2].logic()
+
+            #COMPUTE TOWER ATTACKS
+            for _tower in self._tower_list:
+                #LIST MUST START EMPTY NOT TO STACK ATTACKS FROM PREVIOUS CYCLES
+                _tower._attack_list = []
+                for _enemy in self._enemie_list:
+                    #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
+                    if _tower._distance_to(_enemy) <= _tower._range and len(_tower._attack_list) < tower._level :
+                        _tower._attack_list.append(_enemy._pos)
+                        _enemy._health -= _tower._damage
+                        if _enemy._health <= 0:
+                            _enemy.active = False
 
             
             self.draw_screen()
