@@ -21,12 +21,18 @@ class Main:
         # PLAYER
         self._player = player.Player()
 
+        # MENU
+        self._option_list = [(True, (35, 710)),
+                             (False, (135, 710)),
+                             (False, (235, 710))]
+
         #Tower attributes
         self._tower_list = []
 
+
         #UI attributes
          
-        self._wave_button = Button(pygame.Rect(680, 250, 100, 50), "Wave 1")
+        self._wave_button = Button(pygame.Rect(680, 250, 100, 50), "Wave")
         self._ui_elements_list = []
         self._gold_stats = Stats(pygame.Rect(740, 98, 0, 0), str(self._player.get_gold()))
         self._life_stats = Stats(pygame.Rect(740, 48, 0, 0), str(self._player.get_life()))
@@ -55,8 +61,10 @@ class Main:
                         for e in self._enemie_list:
                             e.set_active()
                     else:
-                        tower = Tower(self._display)
-                        if self._player.get_gold() >= tower.get_price() and self.on_board(event.pos):
+                        tower = None
+                        if self._option_list[0][0]:
+                            tower = Tower(self._display)
+                        if tower != None and self._player.get_gold() >= tower.get_price() and self.on_board(event.pos):
                             self._player.set_gold(self._player.get_gold() - tower.get_price())
                             tower._pos = event.pos
                             self._tower_list.append(tower)
@@ -130,6 +138,7 @@ class Main:
         #DRAW UI ELEMENTS
 
         #DRAW "WAVE" BUTTON
+        self._wave_button.set_text("Wave: " + str(self._inimigo.get_level()))
         self._wave_button.draw(self._display)
         pygame.display.update()
 
@@ -147,8 +156,18 @@ class Main:
 
     def _print_background(self, display):
         display.blit(pygame.image.load("img/fundo_jogo.png"), (0, 0))
-<<<<<<< HEAD
-        display.blit(pygame.image.load("img/tower.png"),(70, 700))
+        display.blit(pygame.image.load("img/tower1.png"),(70, 700))
+        display.blit(pygame.image.load("img/icetower1.png"), (170, 700))
+        display.blit(pygame.image.load("img/firetower1.png"), (270, 700))
+        display.blit(pygame.image.load("img/tower1.png"), (70, 700))
+        for e in self._option_list:
+            self._print_button(e[0], e[1])
+
+    def _print_button(self, bool, pos):
+        if bool:
+            self._display.blit(pygame.image.load("img/on.png"), pos)
+        else:
+            self._display.blit(pygame.image.load("img/off.png"), pos)
 
     def on_board(self, pos):
         if 620 >= pos[0] >= 60 and 620 >= pos[1] >= 60:
@@ -157,13 +176,7 @@ class Main:
             return False
 
 
-=======
-        display.blit(pygame.image.load("img/tower1.png"),(70, 700))
->>>>>>> cc0c51796b64ec16137c1161d5128b194e85144f
 
-        
-
-    
 
 inicio = Main()
 inicio.start()

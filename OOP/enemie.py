@@ -20,7 +20,7 @@ class Enemie:
         self._move_list_y = list([1]*80 + [0]*480 + [1]*240 + [0]*120 + [-1]*120 +
                                  [0]*360 + [1]*120 + [0]*280 + [1]*120 + [0]*280 + [1]*80 +
                                  [0]*360 + [-1]*120 + [0]*80 + [1]*160 + [0]*80)
-        self._speed = 2
+        self._speed = 20
         self._spawn = 0 - self._speed
         self._health_scale = 1
         self._health = config.Config.ENEMIE_START_HEALTH*self._health_scale
