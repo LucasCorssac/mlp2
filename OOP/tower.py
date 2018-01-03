@@ -7,7 +7,7 @@ class Tower:
         self._display = display
         self._start_pos = (0, 0)
         self._pos = self._start_pos
-        self._image = pygame.image.load("img/Tower.png")
+        self._image = pygame.image.load("img/tower1.png")
         self._level = 1
         self._id = 0
         self._range = 50
