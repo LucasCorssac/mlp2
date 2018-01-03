@@ -147,6 +147,7 @@ class Main:
 
     def _print_background(self, display):
         display.blit(pygame.image.load("img/fundo_jogo.png"), (0, 0))
+<<<<<<< HEAD
         display.blit(pygame.image.load("img/tower.png"),(70, 700))
 
     def on_board(self, pos):
@@ -156,6 +157,9 @@ class Main:
             return False
 
 
+=======
+        display.blit(pygame.image.load("img/tower1.png"),(70, 700))
+>>>>>>> cc0c51796b64ec16137c1161d5128b194e85144f
 
         
 
