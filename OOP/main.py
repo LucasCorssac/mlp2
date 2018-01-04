@@ -22,9 +22,9 @@ class Main:
         self._player = player.Player()
 
         # MENU
-        self._option_list = [(True, (35, 710)),
-                             (False, (135, 710)),
-                             (False, (235, 710))]
+        self._option_list = [[True, (76, 750), 1],
+                             [False, (176, 750), 2],
+                             [False, (276, 750), 3]]
 
         #Tower attributes
         self._tower_list = []
@@ -55,6 +55,7 @@ class Main:
                 
                 #CATCHES MOUSE CLICK EVENT
                 if event.type == pygame.MOUSEBUTTONUP:
+                    self.tower_option(event.pos)
                     if self._wave_button.get_rect().collidepoint(event.pos):
                         if not self._start_wave:
                             self._set_start_wave()
@@ -64,23 +65,24 @@ class Main:
                         tower = None
                         if self._option_list[0][0]:
                             tower = Tower(self._display)
+                        if self._option_list[1][0]:
+                            tower = IceTower(self._display)
+                        if self._option_list[2][0]:
+                            tower = FireTower(self._display)
                         if tower != None and self._player.get_gold() >= tower.get_price() and self.on_board(event.pos):
                             self._player.set_gold(self._player.get_gold() - tower.get_price())
                             tower._pos = event.pos
                             self._tower_list.append(tower)
 
-            cont = 0
-            for e in self._enemie_list:
-                if e.is_active():
-                    cont = cont+1
-            if cont == 0:
-                self._start_wave = False
-                for e in self._enemie_list:
-                    e.go_to_start_pos()
-
-
-
             if self._start_wave:
+                cont = 0
+                for e in self._enemie_list:
+                    if e.is_active():
+                        cont = cont + 1
+                if cont == 0:
+                    self._start_wave = False
+                    for e in self._enemie_list:
+                        e.go_to_start_pos()
                 now = pygame.time.get_ticks()
                 if self._enemie_list[0].is_active():
                     self._enemie_list[0].logic()
@@ -117,6 +119,8 @@ class Main:
             if e.is_active():
                 e.draw()
 
+        for e in self._option_list:
+            self._print_button(e[0], e[1])
         #DRAW TOWERS
         for _tower in self._tower_list:
             _tower.draw()
@@ -160,8 +164,6 @@ class Main:
         display.blit(pygame.image.load("img/icetower1.png"), (170, 700))
         display.blit(pygame.image.load("img/firetower1.png"), (270, 700))
         display.blit(pygame.image.load("img/tower1.png"), (70, 700))
-        for e in self._option_list:
-            self._print_button(e[0], e[1])
 
     def _print_button(self, bool, pos):
         if bool:
@@ -174,6 +176,26 @@ class Main:
             return True
         else:
             return False
+
+    def tower_option(self, pos):
+        if 120 >= pos[0] >= 70 and 750 >= pos[1] >= 700:
+            for e in self._option_list:
+                if e[2] == 1:
+                    e[0] = True
+                else:
+                    e[0] = False
+        if 220 >= pos[0] >= 170 and 750 >= pos[1] >= 700:
+            for e in self._option_list:
+                if e[2] == 2:
+                    e[0] = True
+                else:
+                    e[0] = False
+        if 320 >= pos[0] >= 270 and 750 >= pos[1] >= 700:
+            for e in self._option_list:
+                if e[2] == 3:
+                    e[0] = True
+                else:
+                    e[0] = False
 
 
 

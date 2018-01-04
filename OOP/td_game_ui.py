@@ -21,7 +21,6 @@ class UI:
         self._text = text
 
 class Button(UI):
-
     def text_objects(self, font):
         text_surface = font.render(self._text, True, (0,0,0,0))
         return text_surface, text_surface.get_rect()

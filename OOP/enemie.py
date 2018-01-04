@@ -32,7 +32,7 @@ class Enemie:
     def logic(self):
             if self._spawn >= 3019 and self.is_active():
                 self._spawn = 0 - self._speed
-                self._level += 1
+                #self._level += 1
                 self._pos = self._start_pos
                 self._active = False
                 self._attacking += 1
@@ -62,8 +62,8 @@ class Enemie:
     def go_to_start_pos(self):
         self._pos = self._start_pos
         self._spawn = 0 - self._speed
-        self._level += 1
         self.set_full_health()
+        self._level += 1
 
     def _move(self, init):
         x, y = self.get_pos()

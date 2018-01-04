@@ -63,3 +63,14 @@ class Tower:
 
     def set_pos(self, x, y):
         self._pos = (x, y)
+
+
+class IceTower(Tower):
+    def __init__(self, display):
+        super(IceTower, self).__init__(display)
+        self._image = pygame.image.load("img/icetower1.png")
+
+class FireTower(Tower):
+    def __init__(self, display):
+        super(FireTower, self).__init__(display)
+        self._image = pygame.image.load("img/firetower1.png")
