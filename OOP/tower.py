@@ -10,10 +10,11 @@ class Tower:
         self._image = pygame.image.load("img/tower1.png")
         self._level = 1
         self._id = 0
-        self._range = 300
+        self._range = 100
         self._attack_list = []
-        self._damage = 1
+        self._damage = 0.5
         self._price = 50
+        self._upgrade_price = 200
 
     def logic(self):
             if self._spawn >= 3019 and self.is_active():
@@ -31,6 +32,18 @@ class Tower:
 
     def get_price(self):
         return self._price
+
+    def get_upgrade_price(self):
+        return self._upgrade_price
+
+    def get_level(self):
+        return self._level
+
+    def get_range(self):
+        return self._range
+
+    def get_damage(self):
+        return self._damage
 
     def _move(self, init):
         x, y = self.get_pos()
@@ -69,8 +82,19 @@ class IceTower(Tower):
     def __init__(self, display):
         super(IceTower, self).__init__(display)
         self._image = pygame.image.load("img/icetower1.png")
+        self._level = 1
+        self._damage = 1
+        self._range = 50
+        self._price = 60
+        self._upgrade_price = 250
+
 
 class FireTower(Tower):
     def __init__(self, display):
         super(FireTower, self).__init__(display)
         self._image = pygame.image.load("img/firetower1.png")
+        self._level = 1
+        self._damage = 1
+        self._range = 50
+        self._price = 70
+        self._upgrade_price = 300

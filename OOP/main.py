@@ -2,7 +2,7 @@ import pygame
 import enemie
 import board
 from td_game_ui import *
-from tower import *
+import tower
 import config
 import player
 
@@ -28,7 +28,12 @@ class Main:
 
         #Tower attributes
         self._tower_list = []
-
+        self._example_tower = tower.Tower(self._display)
+        self._tower_attributes = [Stats(pygame.Rect(600, 700, 0, 0), "Level: " + str(self._example_tower.get_level())),
+                                  Stats(pygame.Rect(600, 712, 0, 0), "Damage: " + str(self._example_tower.get_damage())),
+                                  Stats(pygame.Rect(600, 724, 0, 0), "Range: " + str(self._example_tower.get_range())),
+                                  Stats(pygame.Rect(600, 736, 0, 0), "Price: " + str(self._example_tower.get_price())+"$"),
+                                  Stats(pygame.Rect(600, 748, 0, 0), "Upgrade: " + str(self._example_tower.get_upgrade_price())+"$")]
 
         #UI attributes
          
@@ -36,6 +41,10 @@ class Main:
         self._ui_elements_list = []
         self._gold_stats = Stats(pygame.Rect(740, 98, 0, 0), str(self._player.get_gold()))
         self._life_stats = Stats(pygame.Rect(740, 48, 0, 0), str(self._player.get_life()))
+
+
+
+
 
     def start(self):
         pygame.init()
@@ -47,7 +56,6 @@ class Main:
         self._enemie_list = [self._inimigo, self._inimigo2, self._inimigo3]
         self._enemie_list_len = len(self._enemie_list)
         self._start_wave = False
-
         while not self._endgame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -62,17 +70,20 @@ class Main:
                         for e in self._enemie_list:
                             e.set_active()
                     else:
-                        tower = None
+                        tower_create = None
                         if self._option_list[0][0]:
-                            tower = Tower(self._display)
+                            tower_create = tower.Tower(self._display)
+                            self.update_tower_attributes(tower_create)
                         if self._option_list[1][0]:
-                            tower = IceTower(self._display)
+                            tower_create = tower.IceTower(self._display)
+                            self.update_tower_attributes(tower_create)
                         if self._option_list[2][0]:
-                            tower = FireTower(self._display)
-                        if tower != None and self._player.get_gold() >= tower.get_price() and self.on_board(event.pos):
-                            self._player.set_gold(self._player.get_gold() - tower.get_price())
-                            tower._pos = event.pos
-                            self._tower_list.append(tower)
+                            tower_create = tower.FireTower(self._display)
+                            self.update_tower_attributes(tower_create)
+                        if tower_create != None and self._player.get_gold() >= tower_create.get_price() and self.on_board(event.pos):
+                            self._player.set_gold(self._player.get_gold() - tower_create.get_price())
+                            tower_create._pos = event.pos
+                            self._tower_list.append(tower_create)
 
             if self._start_wave:
                 cont = 0
@@ -97,7 +108,7 @@ class Main:
                 _tower._attack_list = []
                 for _enemy in self._enemie_list:
                     #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
-                    if _tower._distance_to(_enemy) <= _tower._range and len(_tower._attack_list) < tower._level and _enemy.is_active():
+                    if _tower._distance_to(_enemy) <= _tower._range and len(_tower._attack_list) < _tower._level and _enemy.is_active():
                         _tower._attack_list.append(_enemy._pos)
                         _enemy._health -= _tower._damage
                         if _enemy._health <= 0:
@@ -128,6 +139,10 @@ class Main:
         #DRAW GOLD
         self._gold_stats.set_text(str(self._player.get_gold()))
         self._gold_stats.draw(self._display)
+
+        #DRAW TOWER ATTRIBUTES
+        for e in self._tower_attributes:
+            e.draw(self._display)
         #DRAW LIFE
         life = 0
         for e in self._enemie_list:
@@ -196,6 +211,14 @@ class Main:
                     e[0] = True
                 else:
                     e[0] = False
+
+    def update_tower_attributes(self, one_tower):
+        self._tower_attributes[0].set_text("Level: " + str(one_tower.get_level()))
+        self._tower_attributes[1].set_text("Damage: " + str(one_tower.get_damage()))
+        self._tower_attributes[2].set_text("Range: " + str(one_tower.get_range()))
+        self._tower_attributes[3].set_text("Price: " + str(one_tower.get_price())+"$")
+        self._tower_attributes[4].set_text("Upgrade: " + str(one_tower.get_upgrade_price())+"$")
+
 
 
 
