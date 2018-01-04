@@ -28,12 +28,22 @@ class Main:
 
         #Tower attributes
         self._tower_list = []
-        self._example_tower = tower.Tower(self._display)
-        self._tower_attributes = [Stats(pygame.Rect(600, 700, 0, 0), "Level: " + str(self._example_tower.get_level())),
-                                  Stats(pygame.Rect(600, 712, 0, 0), "Damage: " + str(self._example_tower.get_damage())),
-                                  Stats(pygame.Rect(600, 724, 0, 0), "Range: " + str(self._example_tower.get_range())),
-                                  Stats(pygame.Rect(600, 736, 0, 0), "Price: " + str(self._example_tower.get_price())+"$"),
-                                  Stats(pygame.Rect(600, 748, 0, 0), "Upgrade: " + str(self._example_tower.get_upgrade_price())+"$")]
+        self._example_tower = tower.Tower(self._display,1)
+        self._tower_attributes = [Stats(pygame.Rect(580, 700, 0, 0), "Level: " + str(self._example_tower.get_level())),
+                                  Stats(pygame.Rect(580, 712, 0, 0), "Damage: " + str(self._example_tower.get_damage())),
+                                  Stats(pygame.Rect(580, 724, 0, 0), "Range: " + str(self._example_tower.get_range())),
+                                  Stats(pygame.Rect(580, 736, 0, 0), "Price: " + str(self._example_tower.get_price())+"$"),
+                                  Stats(pygame.Rect(580, 748, 0, 0), "Upgrade: " + str(self._example_tower.get_upgrade_price())+"$")]
+
+        self._tower_next_attributes = [Stats(pygame.Rect(710, 700, 0, 0), "Level: " + str(self._example_tower.get_next_level())),
+                                       Stats(pygame.Rect(710, 712, 0, 0), "Damage: " + str(self._example_tower.get_next_damage())),
+                                       Stats(pygame.Rect(710, 724, 0, 0), "Range: " + str(self._example_tower.get_next_range())),
+                                       Stats(pygame.Rect(710, 736, 0, 0), "Price: " + str(self._example_tower.get_next_price())+"$"),
+                                       Stats(pygame.Rect(710, 748, 0, 0), "Upgrade: " + str(self._example_tower.get_next_upgrade_price())+"$")]
+
+        self._tower_level = 1
+        self._icetower_level = 1
+        self._firetower_level = 1
 
         #UI attributes
          
@@ -72,14 +82,38 @@ class Main:
                     else:
                         tower_create = None
                         if self._option_list[0][0]:
-                            tower_create = tower.Tower(self._display)
-                            self.update_tower_attributes(tower_create)
+                            if self.on_upgrade_button(event.pos):
+                                self._tower_level += 1
+                                tower_create = tower.Tower(self._display, self._tower_level)
+                                self.update_tower_attributes(tower_create)
+                                self.update_tower_next_attributes(tower_create)
+                            else:
+                                tower_create = tower.Tower(self._display, self._tower_level)
+                                self.update_tower_attributes(tower_create)
+                                self.update_tower_next_attributes(tower_create)
                         if self._option_list[1][0]:
-                            tower_create = tower.IceTower(self._display)
-                            self.update_tower_attributes(tower_create)
+                            if self.on_upgrade_button(event.pos):
+                                self._icetower_level += 1
+                                tower_create = tower.IceTower(self._display, self._icetower_level)
+                                self.update_tower_attributes(tower_create)
+                                self.update_tower_next_attributes(tower_create)
+                            else:
+                                tower_create = tower.IceTower(self._display, self._icetower_level)
+                                self.update_tower_attributes(tower_create)
+                                self.update_tower_next_attributes(tower_create)
                         if self._option_list[2][0]:
-                            tower_create = tower.FireTower(self._display)
-                            self.update_tower_attributes(tower_create)
+                            if self.on_upgrade_button(event.pos):
+                                self._firetower_level += 1
+                                tower_create = tower.FireTower(self._display, self._firetower_level)
+                                self.update_tower_attributes(tower_create)
+                                self.update_tower_next_attributes(tower_create)
+                            else:
+                                tower_create = tower.FireTower(self._display, self._firetower_level)
+                                self.update_tower_attributes(tower_create)
+                                self.update_tower_next_attributes(tower_create)
+
+                        if self.on_upgrade_button(event.pos):
+                            tower_create.upgrade_level()
                         if tower_create != None and self._player.get_gold() >= tower_create.get_price() and self.on_board(event.pos):
                             self._player.set_gold(self._player.get_gold() - tower_create.get_price())
                             tower_create._pos = event.pos
@@ -143,6 +177,14 @@ class Main:
         #DRAW TOWER ATTRIBUTES
         for e in self._tower_attributes:
             e.draw(self._display)
+
+        #DRAW TOWER NEXT ATTRIBUTES
+        for e in self._tower_next_attributes:
+            e.draw(self._display)
+
+        #DRAW UPGRADE BUTTON
+        self._display.blit(pygame.image.load("img/upgrade.png"), (595, 760))
+
         #DRAW LIFE
         life = 0
         for e in self._enemie_list:
@@ -218,6 +260,20 @@ class Main:
         self._tower_attributes[2].set_text("Range: " + str(one_tower.get_range()))
         self._tower_attributes[3].set_text("Price: " + str(one_tower.get_price())+"$")
         self._tower_attributes[4].set_text("Upgrade: " + str(one_tower.get_upgrade_price())+"$")
+
+    def update_tower_next_attributes(self, one_tower):
+        self._tower_next_attributes[0].set_text("Level: " + str(one_tower.get_next_level()))
+        self._tower_next_attributes[1].set_text("Damage: " + str(one_tower.get_next_damage()))
+        self._tower_next_attributes[2].set_text("Range: " + str(one_tower.get_next_range()))
+        self._tower_next_attributes[3].set_text("Price: " + str(one_tower.get_next_price())+"$")
+        self._tower_next_attributes[4].set_text("Upgrade: " + str(one_tower.get_next_upgrade_price())+"$")
+
+    def on_upgrade_button(self, pos):
+        if 695 >= pos[0] >= 595 and 790 >= pos[1] >= 760:
+            return True
+        else:
+            return False
+
 
 
 
