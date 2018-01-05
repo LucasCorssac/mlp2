@@ -60,7 +60,7 @@ class Main:
     def start(self):
         pygame.init()
         self._display = pygame.display.set_mode((800, 800))
-        pygame.display.set_caption("Main Menu")
+        pygame.display.set_caption("py.defense")
         self._inimigo = enemie.Enemie(self._display)
         self._inimigo2 = enemie.Enemie(self._display)
         self._inimigo3 = enemie.Enemie(self._display)
@@ -83,7 +83,7 @@ class Main:
                     else:
                         tower_create = None
                         if self._option_list[0][0]:
-                            if self.on_upgrade_button(event.pos):
+                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (200 + (self._tower_level-1)*100):
                                 self._tower_level += 1
                                 tower_create = tower.Tower(self._display, self._tower_level)
                                 self.update_tower_attributes(tower_create)
@@ -93,7 +93,7 @@ class Main:
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
                         if self._option_list[1][0]:
-                            if self.on_upgrade_button(event.pos):
+                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (250 + (self._icetower_level-1)*150):
                                 self._icetower_level += 1
                                 tower_create = tower.IceTower(self._display, self._icetower_level)
                                 self.update_tower_attributes(tower_create)
@@ -103,7 +103,7 @@ class Main:
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
                         if self._option_list[2][0]:
-                            if self.on_upgrade_button(event.pos):
+                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (300 + (self._firetower_level-1)*180):
                                 self._firetower_level += 1
                                 tower_create = tower.FireTower(self._display, self._firetower_level)
                                 self.update_tower_attributes(tower_create)
@@ -113,7 +113,8 @@ class Main:
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
 
-                        if self.on_upgrade_button(event.pos):
+                        if self.on_upgrade_button(event.pos) and (self._player.get_gold() >= tower_create.get_upgrade_price()):
+                            self._player.set_gold(self._player.get_gold() - tower_create.get_upgrade_price())
                             tower_create.upgrade_level()
                         if tower_create != None and self._player.get_gold() >= tower_create.get_price() and self.on_board(event.pos):
                             self._player.set_gold(self._player.get_gold() - tower_create.get_price())
@@ -281,6 +282,7 @@ class Main:
 
 main_menu = menu.Menu()
 inicio = Main()
+print (pygame.font.get_fonts())
 main_menu.start()
 if main_menu.get_start_game():
     inicio.start()
