@@ -1,9 +1,11 @@
 import pygame
 import config
+import sound
 
 
 class Menu:
     def __init__(self):
+        sound.Sound.play_menu_bgm(self)
         self._display = None
         self._start_game = False
         self._collide_new_game = False

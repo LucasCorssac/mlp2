@@ -6,6 +6,7 @@ import tower
 import config
 import player
 import menu
+import sound
 
 class Main:
     def __init__(self):
@@ -17,7 +18,7 @@ class Main:
         self._last = pygame.time.get_ticks()
         self._i = 0
         self._wave_number = 1
-        self._cooldown = 3000 #0.2seconds
+        self._cooldown = 4000 #0.2seconds
         self._board = board.Board()
         # PLAYER
         self._player = player.Player()
@@ -59,6 +60,8 @@ class Main:
 
     def start(self):
         pygame.init()
+        sound.Sound.stop_bgm(self)
+        sound.Sound.play_game_bgm(self)
         self._display = pygame.display.set_mode((800, 800))
         pygame.display.set_caption("py.defense")
 
@@ -285,7 +288,7 @@ class Main:
 
 
 
-
+start_sound_bgms = sound.Sound()
 main_menu = menu.Menu()
 inicio = Main()
 #print (pygame.font.get_fonts())
