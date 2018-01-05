@@ -16,6 +16,15 @@ class Tower:
         self._damage = 0.5 + self._up_factor*200
         self._price = 50 + self._up_factor*50
         self._upgrade_price = 200 + self._up_factor*100
+        self._rect = pygame.Rect(self._pos,self._image.get_size())
+
+    def attack(self, _enemie_list):
+        self._attack_list = []
+        for _enemy in _enemie_list:
+            #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
+            if self._distance_to(_enemy) <= self._range and len(self._attack_list) < self._level and _enemy.is_active():
+                self._attack_list.append(_enemy._pos)
+                _enemy._health -= self._damage
 
 
     def logic(self):
