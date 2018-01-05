@@ -18,14 +18,17 @@ class Tower:
         self._upgrade_price = 200 + self._up_factor*100
         self._rect = pygame.Rect(self._pos,self._image.get_size())
 
-    def attack(self, _enemie_list):
+
+    def _attack(self, _enemy):
+        _enemy._health -= self._damage
+
+    def attack_enemies(self, _enemie_list):
         self._attack_list = []
         for _enemy in _enemie_list:
             #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
             if self._distance_to(_enemy) <= self._range and len(self._attack_list) < self._level and _enemy.is_active():
+                self._attack(_enemy)
                 self._attack_list.append(_enemy._pos)
-                _enemy._health -= self._damage
-
 
     def logic(self):
             if self._spawn >= 3019 and self.is_active():
@@ -122,6 +125,9 @@ class IceTower(Tower):
         self._range = 50 + self._up_factor*10
         self._price = 60 + self._up_factor*20
         self._upgrade_price = 250 + self._up_factor*150
+
+    def _attack(self,enemy):
+        enemy._speed = 0
 
     # GET NEXT LEVEL ATTRIBUTES
     def get_next_level(self):

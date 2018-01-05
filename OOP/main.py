@@ -152,7 +152,7 @@ class Main:
             #COMPUTE TOWER ATTACKS
             for _tower in self._tower_list:
                 #LIST MUST START EMPTY NOT TO STACK ATTACKS FROM PREVIOUS CYCLES
-                _tower.attack(self._enemie_list)
+                _tower.attack_enemies(self._enemie_list)
 
 
             
