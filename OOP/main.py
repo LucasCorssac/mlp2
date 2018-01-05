@@ -5,6 +5,7 @@ from td_game_ui import *
 import tower
 import config
 import player
+import menu
 
 class Main:
     def __init__(self):
@@ -278,6 +279,8 @@ class Main:
 
 
 
-
+main_menu = menu.Menu()
 inicio = Main()
-inicio.start()
+main_menu.start()
+if main_menu.get_start_game():
+    inicio.start()
