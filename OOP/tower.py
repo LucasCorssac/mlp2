@@ -109,7 +109,7 @@ class IceTower(Tower):
         super(IceTower, self).__init__(display, level)
         self._image = pygame.image.load("img/icetower1.png")
         self._level = level
-        self._damage = 1 + self._up_factor*5
+        self._damage = 20 + self._up_factor*5
         self._range = 50 + self._up_factor*10
         self._price = 60 + self._up_factor*20
         self._upgrade_price = 250 + self._up_factor*150
