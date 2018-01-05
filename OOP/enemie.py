@@ -20,12 +20,12 @@ class Enemie:
         self._move_list_y = list([1]*80 + [0]*480 + [1]*240 + [0]*120 + [-1]*120 +
                                  [0]*360 + [1]*120 + [0]*280 + [1]*120 + [0]*280 + [1]*80 +
                                  [0]*360 + [-1]*120 + [0]*80 + [1]*160 + [0]*80)
-        self._speed = 20
-        self._spawn = 0 - self._speed
-        self._health_scale = 1
-        self._health = config.Config.ENEMIE_START_HEALTH*self._health_scale
-        self._active = False
         self._level = 1
+        self._health_scale = self._level - 1
+        self._health = config.Config.ENEMIE_START_HEALTH + 50*self._health_scale
+        self._active = False
+        self._speed = 1
+        self._spawn = 0 - self._speed
         self._reward = 50
         self._attacking = 0
 
@@ -62,8 +62,9 @@ class Enemie:
     def go_to_start_pos(self):
         self._pos = self._start_pos
         self._spawn = 0 - self._speed
+        self.upgrade_enemie()
         self.set_full_health()
-        self._level += 1
+
 
     def _move(self, init):
         x, y = self.get_pos()
@@ -82,36 +83,44 @@ class Enemie:
     def get_level(self):
         return self._level
 
+    def get_speed(self):
+        return self._speed
+
     def set_active(self):
         self._active = True
 
     def set_full_health(self):
-        self._health = config.Config.ENEMIE_START_HEALTH * self._health_scale
+        self._health = config.Config.ENEMIE_START_HEALTH + 50*self._health_scale
 
     def set_not_active(self):
         self._active = False
 
+    def upgrade_enemie(self):
+        self._level += 1
+        self._speed += 1
+        self._health_scale += 1
+
     def _draw_enemie_health(self):
         x, y = self.get_pos()
-        if self._health > 90*self._health_scale:
+        if self._health > 0.90*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (0, 255, 0, 255), (x+10, y-10, 40, 5))
-        elif self._health > 80*self._health_scale:
+        elif self._health > 0.80*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (0, 200, 0, 255), (x+10, y-10, 36, 5))
-        elif self._health > 70*self._health_scale:
+        elif self._health > 0.70*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (0, 150, 0, 255), (x+10, y-10, 32, 5))
-        elif self._health > 60*self._health_scale:
+        elif self._health > 0.60*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (0, 100, 0, 255), (x+10, y-10, 28, 5))
-        elif self._health > 50*self._health_scale:
+        elif self._health > 0.50*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (230, 180, 31, 255), (x+10, y-10, 24, 5))
-        elif self._health > 40*self._health_scale:
+        elif self._health > 0.40*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (222, 120, 40, 255), (x+10, y-10, 20, 5))
-        elif self._health > 30*self._health_scale:
+        elif self._health > 0.30*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (255, 0, 0, 255), (x+10, y-10, 16, 5))
-        elif self._health > 20*self._health_scale:
+        elif self._health > 0.20*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (200, 0, 0, 255), (x+10, y-10, 12, 5))
-        elif self._health > 10*self._health_scale:
+        elif self._health > 0.10*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (150, 0, 0, 255), (x+10, y-10, 8, 5))
-        elif self._health > 0*self._health_scale:
+        elif self._health > 0*(config.Config.ENEMIE_START_HEALTH + 50*self._health_scale):
             pygame.draw.rect(self._display, (100, 0, 0, 255), (x+10, y-10, 4, 5))
 
 

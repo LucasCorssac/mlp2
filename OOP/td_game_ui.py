@@ -22,12 +22,12 @@ class UI:
 
 class Button(UI):
     def text_objects(self, font):
-        text_surface = font.render(self._text, True, (0,0,0,0))
+        text_surface = font.render(self._text, True, (255,0,0,0))
         return text_surface, text_surface.get_rect()
 
     def draw(self, display):
         pygame.draw.rect(display, Colors.BRIGHT_GREEN, self._rect)
-        text_font = pygame.font.SysFont("comicsansms", 20)
+        text_font = pygame.font.SysFont("showcardgothic", 20)
         text_surf, text_rect = self.text_objects(text_font)
         
         x = self._rect.left
@@ -48,7 +48,7 @@ class Stats(UI):
 
     def draw(self, display):
         #pygame.draw.rect(display, Colors.INVISIBLE, self.rect)
-        text_font = pygame.font.SysFont("comicsansms", 15)
+        text_font = pygame.font.SysFont("showcardgothic", 15)
         text_surf, text_rect = self.text_objects(text_font)
 
         x = self._rect.left

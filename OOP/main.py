@@ -15,9 +15,9 @@ class Main:
         self._clock = pygame.time.Clock()
         self._inimigo = None
         self._last = pygame.time.get_ticks()
-        self._cooldown = 200 #0.3seconds
         self._i = 0
         self._wave_number = 1
+        self._cooldown = 3000 #0.2seconds
         self._board = board.Board()
         # PLAYER
         self._player = player.Player()
@@ -30,13 +30,13 @@ class Main:
         #Tower attributes
         self._tower_list = []
         self._example_tower = tower.Tower(self._display,1)
-        self._tower_attributes = [Stats(pygame.Rect(580, 700, 0, 0), "Level: " + str(self._example_tower.get_level())),
+        self._tower_attributes = [Stats(pygame.Rect(580, 700, 0, 0), "Level " + str(self._example_tower.get_level()) + " Stats"),
                                   Stats(pygame.Rect(580, 712, 0, 0), "Damage: " + str(self._example_tower.get_damage())),
                                   Stats(pygame.Rect(580, 724, 0, 0), "Range: " + str(self._example_tower.get_range())),
                                   Stats(pygame.Rect(580, 736, 0, 0), "Price: " + str(self._example_tower.get_price())+"$"),
                                   Stats(pygame.Rect(580, 748, 0, 0), "Upgrade: " + str(self._example_tower.get_upgrade_price())+"$")]
 
-        self._tower_next_attributes = [Stats(pygame.Rect(710, 700, 0, 0), "Level: " + str(self._example_tower.get_next_level())),
+        self._tower_next_attributes = [Stats(pygame.Rect(710, 700, 0, 0), "Level " + str(self._example_tower.get_next_level()) + " Stats"),
                                        Stats(pygame.Rect(710, 712, 0, 0), "Damage: " + str(self._example_tower.get_next_damage())),
                                        Stats(pygame.Rect(710, 724, 0, 0), "Range: " + str(self._example_tower.get_next_range())),
                                        Stats(pygame.Rect(710, 736, 0, 0), "Price: " + str(self._example_tower.get_next_price())+"$"),
@@ -60,11 +60,15 @@ class Main:
     def start(self):
         pygame.init()
         self._display = pygame.display.set_mode((800, 800))
-        pygame.display.set_caption("Main Menu")
+        pygame.display.set_caption("py.defense")
+
         self._inimigo = enemie.Enemie(self._display)
         self._inimigo2 = enemie.Enemie(self._display)
         self._inimigo3 = enemie.Enemie(self._display)
-        self._enemie_list = [self._inimigo, self._inimigo2, self._inimigo3]
+        self._inimigo4 = enemie.Enemie(self._display)
+        self._inimigo5 = enemie.Enemie(self._display)
+
+        self._enemie_list = [self._inimigo, self._inimigo2, self._inimigo3, self._inimigo4, self._inimigo5]
         self._enemie_list_len = len(self._enemie_list)
         self._start_wave = False
         while not self._endgame:
@@ -83,7 +87,7 @@ class Main:
                     else:
                         tower_create = None
                         if self._option_list[0][0]:
-                            if self.on_upgrade_button(event.pos):
+                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (200 + (self._tower_level-1)*100):
                                 self._tower_level += 1
                                 tower_create = tower.Tower(self._display, self._tower_level)
                                 self.update_tower_attributes(tower_create)
@@ -93,7 +97,7 @@ class Main:
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
                         if self._option_list[1][0]:
-                            if self.on_upgrade_button(event.pos):
+                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (250 + (self._icetower_level-1)*150):
                                 self._icetower_level += 1
                                 tower_create = tower.IceTower(self._display, self._icetower_level)
                                 self.update_tower_attributes(tower_create)
@@ -103,7 +107,7 @@ class Main:
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
                         if self._option_list[2][0]:
-                            if self.on_upgrade_button(event.pos):
+                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (300 + (self._firetower_level-1)*180):
                                 self._firetower_level += 1
                                 tower_create = tower.FireTower(self._display, self._firetower_level)
                                 self.update_tower_attributes(tower_create)
@@ -113,7 +117,8 @@ class Main:
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
 
-                        if self.on_upgrade_button(event.pos):
+                        if self.on_upgrade_button(event.pos) and (self._player.get_gold() >= tower_create.get_upgrade_price()):
+                            self._player.set_gold(self._player.get_gold() - tower_create.get_upgrade_price())
                             tower_create.upgrade_level()
                         if tower_create != None and self._player.get_gold() >= tower_create.get_price() and self.on_board(event.pos):
                             self._player.set_gold(self._player.get_gold() - tower_create.get_price())
@@ -125,6 +130,9 @@ class Main:
                 for e in self._enemie_list:
                     if e.is_active():
                         cont = cont + 1
+                        if e._health <= 0:
+                            e.set_not_active()
+                            self._player.set_gold(self._player.get_gold()+e.get_reward())
                 if cont == 0:
                     self._start_wave = False
                     for e in self._enemie_list:
@@ -132,23 +140,19 @@ class Main:
                 now = pygame.time.get_ticks()
                 if self._enemie_list[0].is_active():
                     self._enemie_list[0].logic()
-                if self._enemie_list[1].is_active() and now - self._last >= self._cooldown:
+                if self._enemie_list[1].is_active() and now - self._last >= 1*self._cooldown/self._inimigo.get_speed():
                     self._enemie_list[1].logic()
-                if self._enemie_list[2].is_active() and now - self._last >= self._cooldown+200:
+                if self._enemie_list[2].is_active() and now - self._last >= 2*self._cooldown/self._inimigo.get_speed():
                     self._enemie_list[2].logic()
+                if self._enemie_list[3].is_active() and now - self._last >= 3*self._cooldown/self._inimigo.get_speed():
+                    self._enemie_list[3].logic()
+                if self._enemie_list[4].is_active() and now - self._last >= 4*self._cooldown/self._inimigo.get_speed():
+                    self._enemie_list[4].logic()
 
             #COMPUTE TOWER ATTACKS
             for _tower in self._tower_list:
                 #LIST MUST START EMPTY NOT TO STACK ATTACKS FROM PREVIOUS CYCLES
-                _tower._attack_list = []
-                for _enemy in self._enemie_list:
-                    #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
-                    if _tower._distance_to(_enemy) <= _tower._range and len(_tower._attack_list) < _tower._level and _enemy.is_active():
-                        _tower._attack_list.append(_enemy._pos)
-                        _enemy._health -= _tower._damage
-                        if _enemy._health <= 0:
-                            _enemy.set_not_active()
-                            self._player.set_gold(self._player.get_gold()+_enemy.get_reward())
+                _tower.attack(self._enemie_list)
 
 
             
@@ -182,6 +186,9 @@ class Main:
         #DRAW TOWER NEXT ATTRIBUTES
         for e in self._tower_next_attributes:
             e.draw(self._display)
+
+        #DRAW TOWER NEXT ATTRIBUTES ARROW
+        self._display.blit(pygame.image.load("img/seta.png"), (635, 717))
 
         #DRAW UPGRADE BUTTON
         self._display.blit(pygame.image.load("img/upgrade.png"), (595, 760))
@@ -256,14 +263,14 @@ class Main:
                     e[0] = False
 
     def update_tower_attributes(self, one_tower):
-        self._tower_attributes[0].set_text("Level: " + str(one_tower.get_level()))
+        self._tower_attributes[0].set_text("Level " + str(one_tower.get_level()) + " Stats")
         self._tower_attributes[1].set_text("Damage: " + str(one_tower.get_damage()))
         self._tower_attributes[2].set_text("Range: " + str(one_tower.get_range()))
         self._tower_attributes[3].set_text("Price: " + str(one_tower.get_price())+"$")
         self._tower_attributes[4].set_text("Upgrade: " + str(one_tower.get_upgrade_price())+"$")
 
     def update_tower_next_attributes(self, one_tower):
-        self._tower_next_attributes[0].set_text("Level: " + str(one_tower.get_next_level()))
+        self._tower_next_attributes[0].set_text("Level " + str(one_tower.get_next_level()) + " Stats")
         self._tower_next_attributes[1].set_text("Damage: " + str(one_tower.get_next_damage()))
         self._tower_next_attributes[2].set_text("Range: " + str(one_tower.get_next_range()))
         self._tower_next_attributes[3].set_text("Price: " + str(one_tower.get_next_price())+"$")
@@ -281,6 +288,7 @@ class Main:
 
 main_menu = menu.Menu()
 inicio = Main()
+#print (pygame.font.get_fonts())
 main_menu.start()
 if main_menu.get_start_game():
     inicio.start()
