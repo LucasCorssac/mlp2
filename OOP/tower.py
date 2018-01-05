@@ -16,6 +16,7 @@ class Tower:
         self._damage = 0.5 + self._up_factor*200
         self._price = 50 + self._up_factor*50
         self._upgrade_price = 200 + self._up_factor*100
+        self._rect = pygame.Rect(self._pos,self._image.get_size())
 
 
     def logic(self):
