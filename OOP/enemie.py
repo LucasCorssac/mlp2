@@ -5,8 +5,17 @@ import player
 # Arquivo para testar como fazer a wave de cobras
 # A ideia é ir fazendo aqui e dps dar um jeito de colocar no projeto
 
+
+
 class Enemie:
+
+    #STATUS
+    NORMAL = 0
+    FROZEN = 1
+    BURNING = 2
+
     def __init__(self, display):
+        
         self._display = display
         self._endgame = False
         self._start_pos = (70, 20)
@@ -21,9 +30,15 @@ class Enemie:
                                  [0]*360 + [1]*120 + [0]*280 + [1]*120 + [0]*280 + [1]*80 +
                                  [0]*360 + [-1]*120 + [0]*80 + [1]*160 + [0]*80)
         self._level = 1
+
         self._health_scale = self._level - 1
         self._health = config.Config.ENEMIE_START_HEALTH + 50*self._health_scale
+
+
         self._active = False
+
+        self._status = self.NORMAL
+        
         self._speed = 1
         self._spawn = 0 - self._speed
         self._reward = 50
