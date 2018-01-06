@@ -33,7 +33,8 @@ class Config:
     MENU_BGM = "audio/menu.ogg"
     GAME_BGM = "audio/game.ogg"
     UPGRADE_SOUND = "audio/upgrade.ogg"
-
+    SWITCH_SOUND = "audio/switch.ogg"
+    BUILD_SOUND = "audio/build.ogg"
     # ENEMIE
     ENEMIE_START_HEALTH = 100
 
