@@ -47,10 +47,15 @@ class Main:
         self._poisontower_level = 1
         self._firetower_level = 1
 
+
+
         #UI attributes
+        self._not_muted = True
+        self._mute_button_image = pygame.image.load("img/audio_button.png")
          
         self._wave_button = Stats(pygame.Rect(690, 135, 90, 30), "")
         self._wave_number_display = Stats(pygame.Rect(690, 165, 90, 30), "Wave")
+        self._sound_button = Stats(pygame.Rect(730, 195, 50, 50), "")
         self._ui_elements_list = []
         self._gold_stats = Stats(pygame.Rect(740, 98, 0, 0), str(self._player.get_gold()))
         self._life_stats = Stats(pygame.Rect(740, 48, 0, 0), str(self._player.get_life()))
@@ -92,6 +97,15 @@ class Main:
                             e.set_active()
                     else:
                         tower_create = None
+                        if self._sound_button.get_rect().collidepoint(event.pos):
+                            if self._not_muted:
+                                sound.Sound.stop_BGM(self)
+                                self._mute_button_image = pygame.image.load("img/audio_button_x.png")
+                                self._not_muted = False
+                            else:
+                                sound.Sound.start_BGM(self)
+                                self._mute_button_image = pygame.image.load("img/audio_button.png")
+                                self._not_muted = True
                         if self._option_list[0][0]:
                             if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (200 + (self._tower_level-1)*100):
                                 self._tower_level += 1
@@ -214,8 +228,11 @@ class Main:
 
         #DRAW UI ELEMENTS
 
+        #DRAW SOUND BUTTON
+        self._display.blit(self._mute_button_image, (730, 195))
+
         #DRAW "WAVE" BUTTON
-        self._wave_number_display.set_text("Wave Nº: " + str(self._inimigo.get_level()))
+        self._wave_number_display.set_text("Wave nº: " + str(self._inimigo.get_level()))
         self._wave_number_display.draw(self._display)
         self._wave_button.draw(self._display)
         pygame.display.update()
@@ -300,7 +317,7 @@ class Main:
 start_sounds = sound.Sound()
 main_menu = menu.Menu()
 inicio = Main()
-#print (pygame.font.get_fonts())
+print (pygame.font.get_fonts())
 main_menu.start()
 if main_menu.get_start_game():
     inicio.start()

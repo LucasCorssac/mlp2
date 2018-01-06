@@ -15,6 +15,9 @@ class Sound:
     def stop_BGM(self):
         mixer.music.stop()
 
+    def start_BGM(self):
+        mixer.music.play()
+
     def play_Sound(self, audio):
         effect = mixer.Sound(audio)
         effect.set_volume(0.05)
