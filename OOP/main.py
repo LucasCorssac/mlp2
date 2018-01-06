@@ -44,7 +44,7 @@ class Main:
                                        Stats(pygame.Rect(710, 748, 0, 0), "Upgrade: " + str(self._example_tower.get_next_upgrade_price())+"$")]
 
         self._tower_level = 1
-        self._icetower_level = 1
+        self._poisontower_level = 1
         self._firetower_level = 1
 
         #UI attributes
@@ -102,13 +102,13 @@ class Main:
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
                         if self._option_list[1][0]:
-                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (250 + (self._icetower_level-1)*150):
-                                self._icetower_level += 1
-                                tower_create = tower.IceTower(self._display, self._icetower_level)
+                            if self.on_upgrade_button(event.pos) and self._player.get_gold() >= (250 + (self._poisontower_level-1)*150):
+                                self._poisontower_level += 1
+                                tower_create = tower.PoisonTower(self._display, self._poisontower_level)
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
                             else:
-                                tower_create = tower.IceTower(self._display, self._icetower_level)
+                                tower_create = tower.PoisonTower(self._display, self._poisontower_level)
                                 self.update_tower_attributes(tower_create)
                                 self.update_tower_next_attributes(tower_create)
                         if self._option_list[2][0]:
@@ -231,7 +231,7 @@ class Main:
     def _print_background(self, display):
         display.blit(pygame.image.load("img/fundo_jogo.png"), (0, 0))
         display.blit(pygame.image.load("img/tower1.png"),(70, 700))
-        display.blit(pygame.image.load("img/icetower1.png"), (170, 700))
+        display.blit(pygame.image.load("img/poisontower1.png"), (170, 700))
         display.blit(pygame.image.load("img/firetower1.png"), (270, 700))
         display.blit(pygame.image.load("img/tower1.png"), (70, 700))
 

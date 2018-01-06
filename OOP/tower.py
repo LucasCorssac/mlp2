@@ -13,13 +13,19 @@ class Tower:
         self._id = 0
         self._range = 100 + self._up_factor*10
         self._attack_list = []
-        self._damage = 0.5 + self._up_factor*200
+        self._is_poisoned = 0  # 0 ou 1
+        self._damage = 0.5 + self._up_factor*200 + self._is_poisoned*5*self._up_factor
         self._price = 50 + self._up_factor*50
         self._upgrade_price = 200 + self._up_factor*100
         self._rect = pygame.Rect(self._pos,self._image.get_size())
 
 
+
     def _attack(self, _enemy):
+        if _enemy._status2 == _enemy.POISONED:
+            self._is_poisoned = 1
+        else:
+            self._is_poisoned = 0
         _enemy._health -= self._damage
 
     def attack_enemies(self, _enemie_list):
@@ -116,20 +122,22 @@ class Tower:
         return self._upgrade_price + (self._level*100)
 
 
-class IceTower(Tower):
+class PoisonTower(Tower):
     def __init__(self, display, level):
-        super(IceTower, self).__init__(display, level)
-        self._image = pygame.image.load("img/icetower1.png")
+        super(PoisonTower, self).__init__(display, level)
+        self._image = pygame.image.load("img/poisontower1.png")
         self._level = level
-        self._damage = 2 + self._up_factor*5
+        self._damage = 2 + self._up_factor*5 + self._is_poisoned*5*self._up_factor
         self._range = 50 + self._up_factor*10
         self._price = 60 + self._up_factor*20
         self._upgrade_price = 250 + self._up_factor*150
+        self._is_poisoned = 1
+
 
     def _attack(self,enemy):
-        if enemy._speed >= 1:
-            enemy._speed = 1
-            enemy._health -= self._damage
+        enemy._status2 = enemy.POISONED
+        enemy._poison_init = enemy._spawn
+        enemy._health -= self._damage
 
     def attack_enemies(self, _enemie_list):
         self._attack_list = []
@@ -167,7 +175,7 @@ class FireTower(Tower):
         super(FireTower, self).__init__(display, level)
         self._image = pygame.image.load("img/firetower1.png")
         self._level = level
-        self._damage = 2 + self._up_factor*12
+        self._damage = 2 + self._up_factor*12 + self._is_poisoned*5*self._up_factor
         self._range = 50 + self._up_factor*5
         self._price = 70 + self._up_factor*15
         self._upgrade_price = 300 + self._up_factor*180
@@ -183,6 +191,10 @@ class FireTower(Tower):
 
     def _attack(self, enemy):
         enemy._status = enemy.BURNING
+        if enemy._status2 == enemy.POISONED:
+            self._is_poisoned = 1
+        else:
+            self._is_poisoned = 0
         enemy._fire_damage = self._fire_damage
         enemy._fire_init = enemy._spawn
 

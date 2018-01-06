@@ -11,7 +11,7 @@ class Enemie:
 
     #STATUS
     NORMAL = 0
-    FROZEN = 1
+    POISONED = 1
     BURNING = 2
 
     def __init__(self, display):
@@ -38,13 +38,16 @@ class Enemie:
         self._active = False
 
         self._status = self.NORMAL
+        self._status2 = self.NORMAL
         
         self._speed = 5
         self._spawn = 0 - self._speed
         self._reward = 50
         self._attacking = 0
         self._fire_damage = 1
+        self._poison_damage = 0.5
         self._fire_init = None
+        self._poison_init = None
 
     def logic(self):
             if self._spawn >= 3019 and self.is_active():
@@ -56,8 +59,11 @@ class Enemie:
             else:
                 self._spawn = self._spawn + int(1*self._speed)
                 self.is_on_fire()
-                if self._fire_init != None and self._spawn >= (self._fire_init + 300):
+                self.is_poisoned()
+                if self._fire_init != None and self._status2 == self.NORMAL and self._spawn >= (self._fire_init + 300):
                     self._status = self.NORMAL
+                if self._poison_init != None and self._spawn >= (self._poison_init + 500):
+                    self._status2 = self.NORMAL
                 self._move(self._spawn)
 
     def draw(self):
@@ -83,6 +89,8 @@ class Enemie:
         self._pos = self._start_pos
         self._spawn = 0 - self._speed
         self._status = self.NORMAL
+        self._status2 = self.NORMAL
+        self._image = pygame.image.load("img/snake.png")
         self.upgrade_enemie()
         self.set_full_health()
 
@@ -90,9 +98,19 @@ class Enemie:
     def _move(self, init):
         x, y = self.get_pos()
         if self._move_list_x[init] < 0:
-            self._image = pygame.image.load("img/snake_inv.png")
+            if self._status == self.NORMAL:
+                self._image = pygame.image.load("img/snake_inv.png")
+            if self._status == self.BURNING:
+                self._image = pygame.image.load("img/burning_snake_inv.png")
+            if self._status == self.NORMAL and self._status2 == self.POISONED:
+                self._image = pygame.image.load("img/poisoned_snake_inv.png")
         else:
-            self._image = pygame.image.load("img/snake.png")
+            if self._status == self.NORMAL:
+                self._image = pygame.image.load("img/snake.png")
+            if self._status == self.BURNING:
+                self._image = pygame.image.load("img/burning_snake.png")
+            if self._status == self.NORMAL and self._status2 == self.POISONED:
+                self._image = pygame.image.load("img/poisoned_snake.png")
         self.set_pos(x + int(self._move_list_x[init]*self._speed), y + int(self._move_list_y[init]*self._speed))
 
     def set_pos(self, x, y):
@@ -124,7 +142,11 @@ class Enemie:
     def is_on_fire(self):
         if self._status == self.BURNING:
             self._health -= self._fire_damage
+            self._image = pygame.image.load("img/burning_snake.png")
 
+    def is_poisoned(self):
+        if self._status2 == self.POISONED:
+            self._image = pygame.image.load("img/poisoned_snake.png")
 
     def _draw_enemie_health(self):
         x, y = self.get_pos()
