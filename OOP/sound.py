@@ -9,10 +9,12 @@ class Sound:
 
     def play_BGM(self, audio):
         mixer.music.load(audio)
+        mixer.music.set_volume(1)
         mixer.music.play(-1)
 
     def stop_BGM(self):
         mixer.music.stop()
 
-    def play_Sound(self):
-        mixer.Sound
+    def play_Sound(self, audio):
+        effect = mixer.Sound(audio)
+        mixer.Sound.play(effect)

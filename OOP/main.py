@@ -283,6 +283,7 @@ class Main:
 
     def on_upgrade_button(self, pos):
         if 695 >= pos[0] >= 595 and 790 >= pos[1] >= 760:
+            sound.Sound.play_Sound(self, config.Config.UPGRADE_SOUND)
             return True
         else:
             return False
