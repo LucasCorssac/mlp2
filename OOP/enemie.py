@@ -30,7 +30,6 @@ class Enemie:
                                  [0]*360 + [1]*120 + [0]*280 + [1]*120 + [0]*280 + [1]*80 +
                                  [0]*360 + [-1]*120 + [0]*80 + [1]*160 + [0]*80)
         self._level = 1
-
         self._health_scale = self._level - 1
         self._health = config.Config.ENEMIE_START_HEALTH + 50*self._health_scale
 
@@ -40,7 +39,7 @@ class Enemie:
         self._status = self.NORMAL
         self._status2 = self.NORMAL
         
-        self._speed = 20
+        self._speed = 10
         self._spawn = 0 - self._speed
         self._reward = 50
         self._attacking = 0
@@ -87,11 +86,11 @@ class Enemie:
 
     def go_to_start_pos(self):
         self._pos = self._start_pos
+        self.upgrade_enemie()
         self._spawn = 0 - self._speed
         self._status = self.NORMAL
         self._status2 = self.NORMAL
         self._image = pygame.image.load("img/snake.png")
-        self.upgrade_enemie()
         self.set_full_health()
 
 

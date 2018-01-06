@@ -12,6 +12,7 @@ class Main:
     def __init__(self):
         self._display = None
         self._endgame = False
+        self._game_over = False
         self._enemie_list = []
         self._clock = pygame.time.Clock()
         self._inimigo = None
@@ -82,12 +83,11 @@ class Main:
         self._start_wave = False
 
         while not self._endgame:
-            delta_time = self._clock.get_time()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self._endgame = True
-                
                 #CATCHES MOUSE CLICK EVENT
+
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.tower_option(event.pos)
                     if self._wave_button.get_rect().collidepoint(event.pos):
@@ -176,9 +176,10 @@ class Main:
                 #LIST MUST START EMPTY NOT TO STACK ATTACKS FROM PREVIOUS CYCLES
                 _tower.attack_enemies(self._enemie_list)
 
-
-            
             self.draw_screen()
+            if int(self._life_stats.get_text()) <= 0:
+                self._display.blit(pygame.image.load("img/gameover.png"), (84, 300))
+                self.game_over()
             self._clock.tick(50)
 
 
@@ -310,6 +311,16 @@ class Main:
             return True
         else:
             return False
+
+    def game_over(self):
+        while not self._game_over:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self._game_over = True
+                    self._endgame = True
+
+            pygame.display.update()
+
 
 
 
