@@ -35,6 +35,13 @@ class Config:
     UPGRADE_SOUND = "audio/upgrade.ogg"
     SWITCH_SOUND = "audio/switch.ogg"
     BUILD_SOUND = "audio/build.ogg"
+    CLICK_SOUND = "audio/click.ogg"
+    WAVE_START_SOUND =  "audio/wave_start.ogg"
+    TOWER_HIT_SOUND = "audio/tower_hit.ogg"
+    FIRE_TOWER_HIT_SOUND = "audio/firetower_hit.ogg"
+    POISON_TOWER_HIT_SOUND = "audio/poisontower_hit.ogg"
+    
+
     # ENEMIE
     ENEMIE_START_HEALTH = 100
 
