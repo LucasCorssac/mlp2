@@ -39,10 +39,12 @@ class Enemie:
 
         self._status = self.NORMAL
         
-        self._speed = 1
+        self._speed = 5
         self._spawn = 0 - self._speed
         self._reward = 50
         self._attacking = 0
+        self._fire_damage = 1
+        self._fire_init = None
 
     def logic(self):
             if self._spawn >= 3019 and self.is_active():
@@ -53,6 +55,9 @@ class Enemie:
                 self._attacking += 1
             else:
                 self._spawn = self._spawn + int(1*self._speed)
+                self.is_on_fire()
+                if self._fire_init != None and self._spawn >= (self._fire_init + 300):
+                    self._status = self.NORMAL
                 self._move(self._spawn)
 
     def draw(self):
@@ -77,6 +82,7 @@ class Enemie:
     def go_to_start_pos(self):
         self._pos = self._start_pos
         self._spawn = 0 - self._speed
+        self._status = self.NORMAL
         self.upgrade_enemie()
         self.set_full_health()
 
@@ -114,6 +120,11 @@ class Enemie:
         self._level += 1
         self._speed += 1
         self._health_scale += 1
+
+    def is_on_fire(self):
+        if self._status == self.BURNING:
+            self._health -= self._fire_damage
+
 
     def _draw_enemie_health(self):
         x, y = self.get_pos()

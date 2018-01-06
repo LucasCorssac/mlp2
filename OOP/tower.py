@@ -121,13 +121,15 @@ class IceTower(Tower):
         super(IceTower, self).__init__(display, level)
         self._image = pygame.image.load("img/icetower1.png")
         self._level = level
-        self._damage = 20 + self._up_factor*5
+        self._damage = 2 + self._up_factor*5
         self._range = 50 + self._up_factor*10
         self._price = 60 + self._up_factor*20
         self._upgrade_price = 250 + self._up_factor*150
 
     def _attack(self,enemy):
-        enemy._speed = 0.5
+        if enemy._speed >= 1:
+            enemy._speed = 1
+            enemy._health -= self._damage
 
     def attack_enemies(self, _enemie_list):
         self._attack_list = []
@@ -169,6 +171,7 @@ class FireTower(Tower):
         self._range = 50 + self._up_factor*5
         self._price = 70 + self._up_factor*15
         self._upgrade_price = 300 + self._up_factor*180
+        self._fire_damage = 1 + self._up_factor*1
 
     def attack_enemies(self, _enemie_list):
         self._attack_list = []
@@ -178,8 +181,10 @@ class FireTower(Tower):
                 self._attack(_enemy)
                 self._attack_list.append(_enemy._pos)
 
-    def _attack(self,enemy):
+    def _attack(self, enemy):
         enemy._status = enemy.BURNING
+        enemy._fire_damage = self._fire_damage
+        enemy._fire_init = enemy._spawn
 
     def get_next_level(self):
         return self._level + 1
