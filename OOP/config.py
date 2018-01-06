@@ -29,6 +29,11 @@ class Config:
     IMAGE_FINISH = "img/finish.png"
     GAME_WINDOW  = "img/fundo_jogo.png"
 
+    # SOUND
+    MENU_BGM = "audio/menu.ogg"
+    GAME_BGM = "audio/game.ogg"
+    UPGRADE_SOUND = "audio/upgrade.ogg"
+
     # ENEMIE
     ENEMIE_START_HEALTH = 100
 

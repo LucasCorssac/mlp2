@@ -61,7 +61,7 @@ class Main:
     def start(self):
         pygame.init()
         sound.Sound.stop_bgm(self)
-        sound.Sound.play_game_bgm(self)
+        sound.Sound.play_game_bgm(self, config.Config.GAME_BGM)
         self._display = pygame.display.set_mode((800, 800))
         pygame.display.set_caption("py.defense")
 
@@ -290,7 +290,7 @@ class Main:
 
 
 
-start_sound_bgms = sound.Sound()
+start_sounds = sound.Sound()
 main_menu = menu.Menu()
 inicio = Main()
 #print (pygame.font.get_fonts())
