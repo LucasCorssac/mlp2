@@ -17,4 +17,5 @@ class Sound:
 
     def play_Sound(self, audio):
         effect = mixer.Sound(audio)
+        effect.set_volume(1)
         mixer.Sound.play(effect)
