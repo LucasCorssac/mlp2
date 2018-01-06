@@ -48,8 +48,10 @@ class Menu:
     def _option_select(self):
         x, y = pygame.mouse.get_pos()
         if pygame.mouse.get_pressed() == (1, 0, 0) and (275 < x < 525)and(250 < y < 310):
+            sound.Sound.play_Sound(self, config.Config.CLICK_SOUND)
             self._new_game_option()
         if pygame.mouse.get_pressed() == (1, 0, 0) and (275 < x < 525)and(325 < y < 385):
+            sound.Sound.play_Sound(self, config.Config.CLICK_SOUND)
             self._exit_game_option()
 
     def _option_collide(self):
