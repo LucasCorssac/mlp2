@@ -22,7 +22,7 @@ class UI:
 
 class Button(UI):
     def text_objects(self, font):
-        text_surface = font.render(self._text, True, (255,0,0,0))
+        text_surface = font.render(self._text, True, (0,0,0,0))
         return text_surface, text_surface.get_rect()
 
     def draw(self, display):

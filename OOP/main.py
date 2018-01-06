@@ -49,7 +49,8 @@ class Main:
 
         #UI attributes
          
-        self._wave_button = Button(pygame.Rect(680, 250, 100, 50), "Wave")
+        self._wave_button = Stats(pygame.Rect(690, 135, 90, 30), "")
+        self._wave_number_display = Stats(pygame.Rect(690, 165, 90, 30), "Wave")
         self._ui_elements_list = []
         self._gold_stats = Stats(pygame.Rect(740, 98, 0, 0), str(self._player.get_gold()))
         self._life_stats = Stats(pygame.Rect(740, 48, 0, 0), str(self._player.get_life()))
@@ -123,6 +124,7 @@ class Main:
                                 self.update_tower_next_attributes(tower_create)
 
                         if self.on_upgrade_button(event.pos) and (self._player.get_gold() >= tower_create.get_upgrade_price()):
+                            sound.Sound.play_Sound(self, config.Config.UPGRADE_SOUND)
                             self._player.set_gold(self._player.get_gold() - tower_create.get_upgrade_price())
                             tower_create.upgrade_level()
                         if tower_create != None and self._player.get_gold() >= tower_create.get_price() and self.on_board(event.pos):
@@ -212,7 +214,8 @@ class Main:
         #DRAW UI ELEMENTS
 
         #DRAW "WAVE" BUTTON
-        self._wave_button.set_text("Wave: " + str(self._inimigo.get_level()))
+        self._wave_number_display.set_text("Wave Nº: " + str(self._inimigo.get_level()))
+        self._wave_number_display.draw(self._display)
         self._wave_button.draw(self._display)
         pygame.display.update()
 
@@ -283,7 +286,6 @@ class Main:
 
     def on_upgrade_button(self, pos):
         if 695 >= pos[0] >= 595 and 790 >= pos[1] >= 760:
-            sound.Sound.play_Sound(self, config.Config.UPGRADE_SOUND)
             return True
         else:
             return False

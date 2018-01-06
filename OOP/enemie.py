@@ -40,7 +40,7 @@ class Enemie:
         self._status = self.NORMAL
         self._status2 = self.NORMAL
         
-        self._speed = 5
+        self._speed = 20
         self._spawn = 0 - self._speed
         self._reward = 50
         self._attacking = 0
@@ -60,9 +60,9 @@ class Enemie:
                 self._spawn = self._spawn + int(1*self._speed)
                 self.is_on_fire()
                 self.is_poisoned()
-                if self._fire_init != None and self._status2 == self.NORMAL and self._spawn >= (self._fire_init + 300):
+                if self._fire_init != None and self._status2 == self.NORMAL and self._spawn - self._fire_init >= 30*self._speed:
                     self._status = self.NORMAL
-                if self._poison_init != None and self._spawn >= (self._poison_init + 500):
+                if self._poison_init != None and (self._spawn - self._poison_init >= 50*self._speed):
                     self._status2 = self.NORMAL
                 self._move(self._spawn)
 
