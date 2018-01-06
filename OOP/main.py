@@ -128,6 +128,7 @@ class Main:
                             self._player.set_gold(self._player.get_gold() - tower_create.get_upgrade_price())
                             tower_create.upgrade_level()
                         if tower_create != None and self._player.get_gold() >= tower_create.get_price() and self.on_board(event.pos):
+                            sound.Sound.play_Sound(self, config.Config.BUILD_SOUND)
                             self._player.set_gold(self._player.get_gold() - tower_create.get_price())
                             tower_create._pos = event.pos
                             self._tower_list.append(tower_create)
@@ -252,18 +253,21 @@ class Main:
 
     def tower_option(self, pos):
         if 120 >= pos[0] >= 70 and 750 >= pos[1] >= 700:
+            sound.Sound.play_Sound(self, config.Config.SWITCH_SOUND)
             for e in self._option_list:
                 if e[2] == 1:
                     e[0] = True
                 else:
                     e[0] = False
         if 220 >= pos[0] >= 170 and 750 >= pos[1] >= 700:
+            sound.Sound.play_Sound(self, config.Config.SWITCH_SOUND)
             for e in self._option_list:
                 if e[2] == 2:
                     e[0] = True
                 else:
                     e[0] = False
         if 320 >= pos[0] >= 270 and 750 >= pos[1] >= 700:
+            sound.Sound.play_Sound(self, config.Config.SWITCH_SOUND)
             for e in self._option_list:
                 if e[2] == 3:
                     e[0] = True
