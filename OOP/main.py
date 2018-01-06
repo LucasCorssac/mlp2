@@ -74,7 +74,9 @@ class Main:
         self._enemie_list = [self._inimigo, self._inimigo2, self._inimigo3, self._inimigo4, self._inimigo5]
         self._enemie_list_len = len(self._enemie_list)
         self._start_wave = False
+
         while not self._endgame:
+            delta_time = self._clock.get_time()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self._endgame = True
