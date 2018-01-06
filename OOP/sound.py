@@ -9,7 +9,7 @@ class Sound:
 
     def play_BGM(self, audio):
         mixer.music.load(audio)
-        mixer.music.set_volume(1)
+        mixer.music.set_volume(0)
         mixer.music.play(-1)
 
     def stop_BGM(self):
