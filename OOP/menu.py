@@ -5,7 +5,7 @@ import sound
 
 class Menu:
     def __init__(self):
-        sound.Sound.play_menu_bgm(self, config.Config.MENU_BGM)
+        sound.Sound.play_BGM(self, config.Config.MENU_BGM)
         self._display = None
         self._start_game = False
         self._collide_new_game = False

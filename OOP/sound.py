@@ -7,17 +7,12 @@ class Sound:
         mixer.init()
 
 
-    def play_game_bgm(self, audio):
+    def play_BGM(self, audio):
         mixer.music.load(audio)
         mixer.music.play(-1)
 
-    def play_menu_bgm(self, audio):
-
-        mixer.music.load(audio)
-        mixer.music.play(-1)
-
-    def stop_bgm(self):
+    def stop_BGM(self):
         mixer.music.stop()
 
-    def play_sound(self):
+    def play_Sound(self):
         mixer.Sound
