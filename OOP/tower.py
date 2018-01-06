@@ -170,6 +170,17 @@ class FireTower(Tower):
         self._price = 70 + self._up_factor*15
         self._upgrade_price = 300 + self._up_factor*180
 
+    def attack_enemies(self, _enemie_list):
+        self._attack_list = []
+        for _enemy in _enemie_list:
+            #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
+            if self._distance_to(_enemy) <= self._range and _enemy.is_active() and _enemy._status != _enemy.BURNING:
+                self._attack(_enemy)
+                self._attack_list.append(_enemy._pos)
+
+    def _attack(self,enemy):
+        enemy._status = enemy.BURNING
+
     def get_next_level(self):
         return self._level + 1
 
