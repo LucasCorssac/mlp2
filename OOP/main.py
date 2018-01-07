@@ -161,8 +161,6 @@ class Main:
                         e.go_to_start_pos()
                 now = pygame.time.get_ticks()
 
-                #list(map(lambda x: x.logic() if x.is_active(), self._enemie_list))
-
                 for i, _enemy in enumerate(self._enemie_list):
                     if _enemy.is_active() and now - self._last >= i*self._cooldown/_enemy.get_speed():
                         _enemy.logic()
