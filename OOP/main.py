@@ -162,13 +162,13 @@ class Main:
                 now = pygame.time.get_ticks()
                 if self._enemie_list[0].is_active():
                     self._enemie_list[0].logic()
-                if self._enemie_list[1].is_active() and now - self._last >= 1*self._cooldown/self._inimigo.get_speed():
+                if self._enemie_list[1].is_active() and now - self._last >= 1*self._cooldown/self._inimigo2.get_speed():
                     self._enemie_list[1].logic()
-                if self._enemie_list[2].is_active() and now - self._last >= 2*self._cooldown/self._inimigo.get_speed():
+                if self._enemie_list[2].is_active() and now - self._last >= 2*self._cooldown/self._inimigo3.get_speed():
                     self._enemie_list[2].logic()
-                if self._enemie_list[3].is_active() and now - self._last >= 3*self._cooldown/self._inimigo.get_speed():
+                if self._enemie_list[3].is_active() and now - self._last >= 3*self._cooldown/self._inimigo4.get_speed():
                     self._enemie_list[3].logic()
-                if self._enemie_list[4].is_active() and now - self._last >= 4*self._cooldown/self._inimigo.get_speed():
+                if self._enemie_list[4].is_active() and now - self._last >= 4*self._cooldown/self._inimigo5.get_speed():
                     self._enemie_list[4].logic()
 
             #COMPUTE TOWER ATTACKS
@@ -244,11 +244,8 @@ class Main:
 
     def _set_start_wave(self):
         if not self._start_wave:
-            self._last = pygame.time.get_ticks()
-            self._enemie_list[0].set_active()
-            self._enemie_list[1].set_active()
-            self._enemie_list[2].set_active()
             self._start_wave = True
+            self._last = pygame.time.get_ticks()
 
     def _print_background(self, display):
         display.blit(pygame.image.load("img/fundo_jogo.png"), (0, 0))
