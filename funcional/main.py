@@ -7,6 +7,7 @@ import config
 import player
 import menu
 import sound
+from lists import *
 
 class Main:
     def __init__(self):
@@ -93,6 +94,7 @@ class Main:
                     if self._wave_button.get_rect().collidepoint(event.pos):
                         if not self._start_wave:
                             self._set_start_wave()
+
                         for e in self._enemie_list:
                             e.set_active()
                     else:
@@ -186,29 +188,41 @@ class Main:
     def draw_screen(self):
         self._print_background(self._display)
         self._board.draw_board(self._display, 1)
-        
+        #FUNCT
+        def draw_enem(list):
+            if len(list) > 0:
+                if first(list).is_active():
+                    first(list).draw()
+                draw_enem(rest(list))
+        #FUNCT
+        def draw_towers(list):
+            if len(list)>0:
+                first(list).draw()
+                draw_towers(rest(list))
         #DRAW ENEMIES
-        for e in self._enemie_list:
-            if e.is_active():
-                e.draw()
+        draw_enem(self._enemie_list)
 
         for e in self._option_list:
             self._print_button(e[0], e[1])
         #DRAW TOWERS
-        for _tower in self._tower_list:
-            _tower.draw()
+        draw_towers(self._tower_list)
 
         #DRAW GOLD
         self._gold_stats.set_text(str(self._player.get_gold()))
         self._gold_stats.draw(self._display)
 
+        #FUNCT
         #DRAW TOWER ATTRIBUTES
-        for e in self._tower_attributes:
-            e.draw(self._display)
+        def draw_att(list):
+            if len(list) > 0:
+                first(list).draw(self._display)
+                draw_att(rest(list))
 
+        draw_att(self._tower_attributes)
         #DRAW TOWER NEXT ATTRIBUTES
-        for e in self._tower_next_attributes:
-            e.draw(self._display)
+        draw_att(self._tower_next_attributes)
+
+
 
         #DRAW TOWER NEXT ATTRIBUTES ARROW
         self._display.blit(pygame.image.load("img/seta.png"), (635, 717))
@@ -269,25 +283,21 @@ class Main:
     def tower_option(self, pos):
         if 120 >= pos[0] >= 70 and 750 >= pos[1] >= 700:
             sound.Sound.play_Sound(self, config.Config.SWITCH_SOUND)
-            for e in self._option_list:
-                if e[2] == 1:
-                    e[0] = True
-                else:
-                    e[0] = False
+            self.set_option(self._option_list,1)
         if 220 >= pos[0] >= 170 and 750 >= pos[1] >= 700:
             sound.Sound.play_Sound(self, config.Config.SWITCH_SOUND)
-            for e in self._option_list:
-                if e[2] == 2:
-                    e[0] = True
-                else:
-                    e[0] = False
+            self.set_option(self._option_list,2)
         if 320 >= pos[0] >= 270 and 750 >= pos[1] >= 700:
             sound.Sound.play_Sound(self, config.Config.SWITCH_SOUND)
-            for e in self._option_list:
-                if e[2] == 3:
-                    e[0] = True
-                else:
-                    e[0] = False
+            self.set_option(self._option_list,3)
+    #FUNCT
+    def set_option(self,list,x):
+        if len(list) > 0:
+            if first(list)[2] == x:
+                first(list)[0] = True
+            else:
+                first(list)[0] = False
+            self.set_option(rest(list),x)
 
     def update_tower_attributes(self, one_tower):
         self._tower_attributes[0].set_text("Level " + str(one_tower.get_level()) + " Stats")
