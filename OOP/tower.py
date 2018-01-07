@@ -95,8 +95,10 @@ class Tower:
     def draw(self):
         self._display.blit(self._image, self.get_pos())
         (x, y) = self.get_pos()
-        for attack in self._attack_list:
-            pygame.draw.line(self._display, (255, 125, 0), (x+26, y+10), attack, 4)
+        list(map(lambda attack: pygame.draw.line(self._display, (255, 125, 0), (x+26, y+10), attack, 4),
+                            self._attack_list))
+        #for attack in [enemy.post for enemy in self._attack_list]:
+            
 
     def get_pos(self):
         x, y = self._pos
@@ -140,18 +142,14 @@ class PoisonTower(Tower):
         enemy._health -= self._damage
 
     def attack_enemies(self, _enemie_list):
-        self._attack_list = []
-        for _enemy in _enemie_list:
-            #ONLY ATTACK IF THE ENEMY IS IN RANGE AND THERE ARE ATTACKS LEFT (MAX ATTACKS = LEVEL OF TOWER)
-            if self._distance_to(_enemy) <= self._range and _enemy.is_active():
-                self._attack(_enemy)
-                self._attack_list.append(_enemy._pos)
+        self._attack_list = [e for e in _enemie_list if self._distance_to(e) <= self._range and e.is_active()]
+        list(map(self._attack, self._attack_list))
+
 
     def draw(self):
         self._display.blit(self._image, self.get_pos())
         #(x, y) = self.get_pos()
-        for attack in self._attack_list:
-            #pygame.draw.line(self._display, (0, 125, 255), (x+26, y+10), attack, 4)
+        if self._attack_list:
             pygame.draw.circle(self._display, pygame.Color(0, 125, 255, 255), self._pos, self._range, 1)
 
     # GET NEXT LEVEL ATTRIBUTES

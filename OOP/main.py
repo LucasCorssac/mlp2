@@ -160,16 +160,13 @@ class Main:
                     for e in self._enemie_list:
                         e.go_to_start_pos()
                 now = pygame.time.get_ticks()
-                if self._enemie_list[0].is_active():
-                    self._enemie_list[0].logic()
-                if self._enemie_list[1].is_active() and now - self._last >= 1*self._cooldown/self._inimigo2.get_speed():
-                    self._enemie_list[1].logic()
-                if self._enemie_list[2].is_active() and now - self._last >= 2*self._cooldown/self._inimigo3.get_speed():
-                    self._enemie_list[2].logic()
-                if self._enemie_list[3].is_active() and now - self._last >= 3*self._cooldown/self._inimigo4.get_speed():
-                    self._enemie_list[3].logic()
-                if self._enemie_list[4].is_active() and now - self._last >= 4*self._cooldown/self._inimigo5.get_speed():
-                    self._enemie_list[4].logic()
+
+                #list(map(lambda x: x.logic() if x.is_active(), self._enemie_list))
+
+                for i, _enemy in enumerate(self._enemie_list):
+                    if _enemy.is_active() and now - self._last >= i*self._cooldown/_enemy.get_speed():
+                        _enemy.logic()
+
 
             #COMPUTE TOWER ATTACKS
             for _tower in self._tower_list:
