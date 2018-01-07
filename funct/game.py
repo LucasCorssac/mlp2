@@ -110,7 +110,7 @@ def make_trail_direction(i):
             return 'r'
 
     
-trail_direction = [x for x in map(make_trail_direction, range(len(trail)))]
+trail_direction = [s for s in map(make_trail_direction, range(len(trail)))]
 
 #trail_direction = ['r', 'd', 'l', 'd', 'r', 'u', 'l','d', 'r', 'u']
 
